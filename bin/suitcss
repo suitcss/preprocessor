@@ -56,7 +56,6 @@ program.parse(process.argv);
 
 var input = program.args[0] ? resolve(program.args[0]) : null;
 var output = program.args[1] ? resolve(program.args[1]) : null;
-var importRoot = program.importRoot;
 var verbose = program.verbose;
 var regen = program.watch && input && output;
 
@@ -91,7 +90,7 @@ function run () {
     var css = buffer.toString();
 
     try {
-      css = suitcss(css, { compress: program.compress, dir: importRoot, source: input });
+      css = suitcss(css, { compress: program.compress, root: program.importRoot, source: input });
     } catch (e) {
       e.css = css;
       logger.throw(e);
