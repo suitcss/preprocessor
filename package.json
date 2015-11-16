@@ -17,6 +17,7 @@
     "node-watch": "0.3.4",
     "pad-component": "0.0.1",
     "postcss": "^5.0.12",
+    "postcss-bem-linter": "^2.2.0",
     "postcss-calc": "^5.0.0",
     "postcss-custom-media": "^5.0.0",
     "postcss-custom-properties": "^5.0.0",
