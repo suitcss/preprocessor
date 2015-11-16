@@ -18,7 +18,6 @@ var write = require('write-file-stdout');
 program
   .version(require('../package.json').version)
   .usage('[<input>] [<output>]')
-  .option('-c, --compress', 'compress output')
   .option('-i, --import-root [path]', 'the root directory for imported css files', '')
   .option('-v, --verbose', 'log verbose output for debugging')
   .option('-w, --watch', 'watch the input file for changes');
@@ -90,7 +89,7 @@ function run () {
     var css = buffer.toString();
 
     try {
-      css = suitcss(css, { compress: program.compress, root: program.importRoot, source: input });
+      css = suitcss(css, { root: program.importRoot });
     } catch (e) {
       e.css = css;
       logger.throw(e);

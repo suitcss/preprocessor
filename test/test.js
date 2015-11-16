@@ -3,7 +3,7 @@ var child = require('child_process');
 var exec = child.exec;
 var spawn = child.spawn;
 var fs = require('fs');
-var suitcss = require('../lib/index.js');
+var suitcss = require('../lib');
 var path = require('path');
 
 var features = [
@@ -101,19 +101,6 @@ describe('cli', function () {
       assert(err);
       assert(err.code == 1);
       assert(-1 != stderr.indexOf('not found'));
-      done();
-    });
-  });
-
-  xit('should print a nice error', function (done) {
-    exec('bin/suitcss test/fixtures/cli/error.css', function (err, stdout, stderr) {
-      assert(err);
-      assert(err.code == 1);
-      assert(-1 != stderr.indexOf('error'));
-      assert(-1 != stderr.indexOf('SyntaxError: Missing closing parentheses'));
-      assert(-1 != stderr.indexOf('at '));
-      assert(-1 != stderr.indexOf('15'));
-      assert(-1 != stderr.indexOf('var('));
       done();
     });
   });
