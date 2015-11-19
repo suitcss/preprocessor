@@ -8,12 +8,14 @@
   },
   "files": [
     "bin",
-    "lib"
+    "lib",
+    "postcss.config.js"
   ],
   "dependencies": {
     "autoprefixer": "^6.1.0",
     "colors": "~1.1.2",
     "commander": "~2.9.0",
+    "deepmerge": "^0.2.10",
     "node-watch": "0.3.4",
     "pad-component": "0.0.1",
     "postcss": "^5.0.12",

@@ -5,6 +5,7 @@ var spawn = child.spawn;
 var fs = require('fs');
 var suitcss = require('../lib');
 var path = require('path');
+var config = require('../postcss.config.js');
 
 var features = [
   'calc',
@@ -33,7 +34,7 @@ describe('features', function () {
     it('should add ' + name + ' support', function () {
       var input = read('fixtures/' + name);
       var output = read('fixtures/' + name + '.out');
-      assert.equal(suitcss(input, { root: 'test/fixtures' }).trim(), output.trim());
+      assert.equal(suitcss(input, { root: 'test/fixtures', config: config }).trim(), output.trim());
     });
   });
 });
