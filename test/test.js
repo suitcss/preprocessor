@@ -80,7 +80,7 @@ describe('cli', function () {
     exec('bin/suitcss -i test/fixtures test/fixtures/import.css test/fixtures/cli/output.css', function (err, stdout) {
       if (err) return done(err);
       var res = read('fixtures/cli/output');
-      var expected = read('fixtures/import.out');
+      var expected = read('fixtures/component.out');
       assert.equal(res, expected);
       done();
     });
