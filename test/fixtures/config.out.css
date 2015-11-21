@@ -1,0 +1,30 @@
+/** @define Component */
+
+.u-img {
+  border-radius: 50%;
+}
+
+@custom-media --media-query (min-width: 200px);
+
+:root {
+  --Component-size: 16px;
+}
+
+.Component {
+  font-size: var(--Component-size);
+  width: calc(100% * 1 / 6);
+}
+
+.Component-item {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+@media (--media-query) {
+  .Component-item {
+    color: red;
+  }
+}
+

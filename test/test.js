@@ -86,6 +86,16 @@ describe('cli', function () {
     });
   });
 
+  it('should allow a config file to be passed', function (done) {
+    exec('bin/suitcss -i test/fixtures test/fixtures/import.css -c test/test.config.js test/fixtures/cli/output.css', function (err, stdout) {
+      if (err) return done(err);
+      var res = read('fixtures/cli/output');
+      var expected = read('fixtures/config.out');
+      assert.equal(res, expected);
+      done();
+    });
+  });
+
   it('should log on non-existant file', function (done) {
     exec('bin/suitcss test/fixtures/cli/non-existant.css', function (err, stdout, stderr) {
       assert(err);
