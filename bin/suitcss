@@ -19,7 +19,7 @@ program
   .version(require('../package.json').version)
   .usage('[<input>] [<output>]')
   .option('-i, --import-root [path]', 'the root directory for imported css files', '')
-  .option('-c', '--config [path]', 'a custom config file for PostCSS')
+  .option('-c, --config [path]', 'a custom PostCSS config file', '')
   .option('-v, --verbose', 'log verbose output for debugging')
   .option('-w, --watch', 'watch the input file for changes');
 
@@ -56,7 +56,7 @@ program.parse(process.argv);
 
 var input = program.args[0] ? resolve(program.args[0]) : null;
 var output = program.args[1] ? resolve(program.args[1]) : null;
-var config = require(resolve(program.config || '')) || {};
+var config = program.config ? require(resolve(program.config)) : null;
 var verbose = program.verbose;
 var regen = program.watch && input && output;
 
