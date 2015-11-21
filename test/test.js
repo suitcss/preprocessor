@@ -3,7 +3,8 @@ var child = require('child_process');
 var exec = child.exec;
 var spawn = child.spawn;
 var fs = require('fs');
-var suitcss = require('../lib');
+var rewire = require('rewire');
+var suitcss = rewire('../lib');
 var path = require('path');
 
 /**
@@ -13,6 +14,46 @@ var path = require('path');
 describe('suitcss', function () {
   it('should return a css string', function () {
     expect(suitcss('body {}')).to.be.a('string');
+  });
+
+  it('should throw if css is not a string', function() {
+    expect(function() {suitcss(null);}).to.throw(Error);
+    expect(function() {suitcss({});}).to.throw(Error);
+  });
+
+  describe('passing options', function() {
+    var mergeOptions, defaults;
+
+    beforeEach(function() {
+      mergeOptions = suitcss.__get__('mergeOptions');
+      defaults = suitcss.__get__('defaults');
+    });
+
+    it('should use default options when nothing is passed', function() {
+      expect(mergeOptions({})).to.eql(defaults);
+      expect(mergeOptions()).to.eql(defaults);
+    });
+
+    it('should allow an import root to be set', function() {
+      var opts = mergeOptions({root: 'test/root'});
+      expect(opts['postcss-import'].root).to.equal('test/root');
+    });
+
+    it('should merge config options with existing defaults', function() {
+      var use = ['postcss-import', 'autoprefixer'];
+      var autoprefixer = {browsers: ['> 1%', 'IE 7'], cascade: false};
+      var opts = mergeOptions({
+        config: {
+          use: use,
+          autoprefixer: autoprefixer
+        }
+      });
+
+      expect(opts.use).to.eql(use);
+      expect(opts.autoprefixer).to.eql(autoprefixer);
+      expect(opts['postcss-reporter']).to.eql(defaults['postcss-reporter']);
+      expect(opts['postcss-import']).to.eql(defaults['postcss-import']);
+    });
   });
 });
 

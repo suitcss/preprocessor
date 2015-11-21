@@ -30,7 +30,8 @@
   },
   "devDependencies": {
     "chai": "^3.4.1",
-    "mocha": "^2.3.4"
+    "mocha": "^2.3.4",
+    "rewire": "^2.5.0"
   },
   "scripts": {
     "test": "mocha --reporter spec --slow 400",
