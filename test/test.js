@@ -5,15 +5,6 @@ var spawn = child.spawn;
 var fs = require('fs');
 var suitcss = require('../lib');
 var path = require('path');
-var config = require('../postcss.config.js');
-
-var features = [
-  'calc',
-  'custom-media',
-  'import',
-  'prefixes',
-  'vars'
-];
 
 /**
  * Node API tests.
@@ -30,12 +21,10 @@ describe('suitcss', function () {
  */
 
 describe('features', function () {
-  features.forEach(function (name) {
-    it('should add ' + name + ' support', function () {
-      var input = read('fixtures/' + name);
-      var output = read('fixtures/' + name + '.out');
-      assert.equal(suitcss(input, { root: 'test/fixtures', config: config }).trim(), output.trim());
-    });
+  it('should preprocess CSS correctly', function () {
+    var input = read('fixtures/component');
+    var output = read('fixtures/component.out');
+    assert.equal(suitcss(input, {root: 'test/fixtures'}).trim(), output.trim());
   });
 });
 
