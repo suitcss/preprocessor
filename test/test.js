@@ -1,4 +1,4 @@
-var assert = require('assert');
+var expect = require('chai').expect;
 var child = require('child_process');
 var exec = child.exec;
 var spawn = child.spawn;
@@ -12,7 +12,7 @@ var path = require('path');
 
 describe('suitcss', function () {
   it('should return a css string', function () {
-    assert('string' == typeof suitcss('body {}'));
+    expect(suitcss('body {}')).to.be.a('string');
   });
 });
 
@@ -24,7 +24,8 @@ describe('features', function () {
   it('should preprocess CSS correctly', function () {
     var input = read('fixtures/component');
     var output = read('fixtures/component.out');
-    assert.equal(suitcss(input, {root: 'test/fixtures'}).trim(), output.trim());
+
+    expect(suitcss(input, {root: 'test/fixtures'}).trim()).to.equal(output.trim());
   });
 });
 
@@ -44,7 +45,7 @@ describe('cli', function () {
     exec('bin/suitcss test/fixtures/cli/input.css test/fixtures/cli/output.css', function (err, stdout) {
       if (err) return done(err);
       var res = read('fixtures/cli/output');
-      assert.equal(res, output);
+      expect(res).to.equal(output);
       done();
     });
   });
@@ -52,7 +53,7 @@ describe('cli', function () {
   it('should read from a file and write to stdout', function (done) {
     exec('bin/suitcss test/fixtures/cli/input.css', function (err, stdout) {
       if (err) return done(err);
-      assert.equal(stdout, output);
+      expect(stdout).to.equal(output);
       done();
     });
   });
@@ -60,7 +61,7 @@ describe('cli', function () {
   it('should read from stdin and write to stdout', function (done) {
     var child = exec('bin/suitcss', function (err, stdout) {
       if (err) return done(err);
-      assert.equal(stdout, output);
+      expect(stdout).to.equal(output);
       done();
     });
 
@@ -71,7 +72,7 @@ describe('cli', function () {
   it('should log on verbose', function (done) {
     exec('bin/suitcss -v test/fixtures/cli/input.css test/fixtures/cli/output.css', function (err, stdout) {
       if (err) return done(err);
-      assert(-1 != stdout.indexOf('write'));
+      expect(stdout).to.contain('write');
       done();
     });
   });
@@ -81,7 +82,7 @@ describe('cli', function () {
       if (err) return done(err);
       var res = read('fixtures/cli/output');
       var expected = read('fixtures/component.out');
-      assert.equal(res, expected);
+      expect(res).to.equal(expected);
       done();
     });
   });
@@ -91,16 +92,16 @@ describe('cli', function () {
       if (err) return done(err);
       var res = read('fixtures/cli/output');
       var expected = read('fixtures/config.out');
-      assert.equal(res, expected);
+      expect(res).to.equal(expected);
       done();
     });
   });
 
   it('should log on non-existant file', function (done) {
     exec('bin/suitcss test/fixtures/cli/non-existant.css', function (err, stdout, stderr) {
-      assert(err);
-      assert(err.code == 1);
-      assert(-1 != stderr.indexOf('not found'));
+      expect(err).to.be.an('error');
+      expect(err.code).to.equal(1);
+      expect(stderr).to.contain('not found');
       done();
     });
   });

@@ -29,6 +29,7 @@
     "write-file-stdout": "0.0.2"
   },
   "devDependencies": {
+    "chai": "^3.4.1",
     "mocha": "^2.3.4"
   },
   "scripts": {
