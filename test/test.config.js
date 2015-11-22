@@ -1,6 +1,5 @@
 module.exports = {
   use: [
-    "postcss-import",
-    "autoprefixer"
+    "postcss-property-lookup"
   ]
 };

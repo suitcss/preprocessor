@@ -40,19 +40,27 @@ describe('suitcss', function () {
     });
 
     it('should merge config options with existing defaults', function() {
-      var use = ['postcss-import', 'autoprefixer'];
       var autoprefixer = {browsers: ['> 1%', 'IE 7'], cascade: false};
       var opts = mergeOptions({
+        root: 'test/root',
         config: {
-          use: use,
+          use: ['postcss-property-lookup'],
           autoprefixer: autoprefixer
         }
       });
 
-      expect(opts.use).to.eql(use);
+      expect(opts.use).to.eql([
+        'postcss-import',
+        'postcss-custom-properties',
+        'postcss-calc',
+        'postcss-custom-media',
+        'autoprefixer',
+        'postcss-property-lookup',
+        'postcss-reporter'
+      ]);
       expect(opts.autoprefixer).to.eql(autoprefixer);
       expect(opts['postcss-reporter']).to.eql(defaults['postcss-reporter']);
-      expect(opts['postcss-import']).to.eql(defaults['postcss-import']);
+      expect(opts['postcss-import'].root).to.equal('test/root');
     });
   });
 });
@@ -129,7 +137,7 @@ describe('cli', function () {
   });
 
   it('should allow a config file to be passed', function (done) {
-    exec('bin/suitcss -i test/fixtures test/fixtures/import.css -c test/test.config.js test/fixtures/cli/output.css', function (err, stdout) {
+    exec('bin/suitcss -i test/fixtures -c test/test.config.js test/fixtures/config.css test/fixtures/cli/output.css', function (err, stdout) {
       if (err) return done(err);
       var res = read('fixtures/cli/output');
       var expected = read('fixtures/config.out');

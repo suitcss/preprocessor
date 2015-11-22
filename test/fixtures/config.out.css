@@ -4,15 +4,9 @@
   border-radius: 50%;
 }
 
-@custom-media --media-query (min-width: 200px);
-
-:root {
-  --Component-size: 16px;
-}
-
 .Component {
-  font-size: var(--Component-size);
-  width: calc(100% * 1 / 6);
+  font-size: 16px;
+  width: 16.66667%;
 }
 
 .Component-item {
@@ -22,9 +16,14 @@
   display: flex;
 }
 
-@media (--media-query) {
+@media (min-width: 200px) {
   .Component-item {
     color: red;
   }
+}
+
+.Test {
+  width: 100px;
+  height: 100px;
 }
 
