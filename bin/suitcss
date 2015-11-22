@@ -18,6 +18,7 @@ var writeFileSync = fs.outputFileSync;
 program
   .version(require('../package.json').version)
   .usage('[<input>] [<output>]')
+  .option('-m, --minify', 'minify output with cssnano')
   .option('-i, --import-root [path]', 'the root directory for imported css files', '')
   .option('-c, --config [path]', 'a custom PostCSS config file', '')
   .option('-v, --verbose', 'log verbose output for debugging')
@@ -107,7 +108,7 @@ function run () {
     var css = buffer.toString();
 
     suitcss(css, {
-      compress: program.compress,
+      minify: program.minify,
       root: program.importRoot,
       config: config
     }).then(function(result) {

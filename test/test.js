@@ -42,6 +42,11 @@ describe('suitcss', function () {
       expect(opts['postcss-import'].root).to.equal('test/root');
     });
 
+    it('should allow an minify option to be set', function() {
+      var opts = mergeOptions({minify: true});
+      expect(opts.minify).to.be.true;
+    });
+
     it('should merge config options with existing defaults', function() {
       var autoprefixer = {browsers: ['> 1%', 'IE 7'], cascade: false};
       var opts = mergeOptions({
@@ -137,6 +142,16 @@ describe('cli', function () {
       if (err) return done(err);
       var res = read('fixtures/cli/output');
       var expected = read('fixtures/component.out');
+      expect(res).to.equal(expected);
+      done();
+    });
+  });
+
+  it('should minify the output', function (done) {
+    exec('bin/suitcss -i test/fixtures test/fixtures/import.css test/fixtures/cli/output.css -m', function (err, stdout) {
+      if (err) return done(err);
+      var res = read('fixtures/cli/output');
+      var expected = read('fixtures/minify.out');
       expect(res).to.equal(expected);
       done();
     });
