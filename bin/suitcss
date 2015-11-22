@@ -8,7 +8,7 @@ var path = require('path');
 var resolve = path.resolve;
 var program = require('commander');
 var read = require('read-file-stdin');
-var watch = require('node-watch');
+var chokidar = require('chokidar');
 var write = require('write-file-stdout');
 
 /**
@@ -73,12 +73,25 @@ if (input && !exists(input)) logger.fatal('not found', input);
 run();
 
 /**
- * Watch?
+ * Watch
  */
 
+var currentWatchedFiles;
 if (regen) {
-  watch(input, run);
-  if (verbose) logger.log('watch', input);
+  var watcher = chokidar.watch(input);
+  watcher.on('change', run);
+  watcher.on('change', function(file) {
+    if (verbose) logger.log(path.basename(file) + ' changed');
+  });
+  watcher.on('ready', function() {
+    if (verbose) logger.log('Watching ' + path.basename(input));
+  });
+
+  global.watchCSS = function(imported) {
+    watcher.unwatch(currentWatchedFiles);
+    watcher.add(imported);
+    currentWatchedFiles = imported;
+  };
 }
 
 /**
