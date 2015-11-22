@@ -39,6 +39,9 @@ program.on('--help', function () {
   console.log('    # watch the input file for changes:');
   console.log('    $ suitcss --watch input.css output.css');
   console.log();
+  console.log('    # configure postcss plugins with a config file:');
+  console.log('    $ suitcss --config config.js input.css output.css');
+  console.log();
   console.log('    # unix-style piping to stdin and stdout:');
   console.log('    $ cat input.css | suitcss | grep background-color');
   console.log();
