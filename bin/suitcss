@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-var fs = require('fs');
+var fs = require('fs-extra');
 var exists = fs.existsSync;
 var logger = require('./logger');
 var suitcss = require('..');
@@ -9,7 +9,7 @@ var resolve = path.resolve;
 var program = require('commander');
 var read = require('read-file-stdin');
 var chokidar = require('chokidar');
-var write = require('write-file-stdout');
+var writeFileSync = fs.outputFileSync;
 
 /**
  * Usage.
@@ -113,7 +113,11 @@ function run () {
       logger.throw(e);
     }
 
-    write(output, css + '\n');
+    if (output) {
+      writeFileSync(output, css + '\n');
+    } else {
+      console.log(css);
+    }
     if (verbose && output) logger.log('write', output);
   });
 }
