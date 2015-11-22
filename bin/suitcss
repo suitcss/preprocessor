@@ -21,7 +21,7 @@ program
   .option('-i, --import-root [path]', 'the root directory for imported css files', '')
   .option('-c, --config [path]', 'a custom PostCSS config file', '')
   .option('-v, --verbose', 'log verbose output for debugging')
-  .option('-w, --watch', 'watch the input file for changes');
+  .option('-w, --watch', 'watch the input file and any imports for changes');
 
 /**
  * Examples.
