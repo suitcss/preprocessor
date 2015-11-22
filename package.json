@@ -8,8 +8,7 @@
   },
   "files": [
     "bin",
-    "lib",
-    "postcss.config.js"
+    "lib"
   ],
   "dependencies": {
     "autoprefixer": "^6.1.0",
