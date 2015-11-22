@@ -12,8 +12,11 @@ var path = require('path');
  */
 
 describe('suitcss', function () {
-  it('should return a css string', function () {
-    expect(suitcss('body {}')).to.be.a('string');
+  it('should return a css string', function (done) {
+    suitcss('body {}').then(function(result) {
+      expect(result.css).to.be.a('string');
+      done();
+    });
   });
 
   it('should throw if css is not a string', function() {
@@ -70,11 +73,14 @@ describe('suitcss', function () {
  */
 
 describe('features', function () {
-  it('should preprocess CSS correctly', function () {
+  it('should preprocess CSS correctly', function (done) {
     var input = read('fixtures/component');
     var output = read('fixtures/component.out');
 
-    expect(suitcss(input, {root: 'test/fixtures'}).trim()).to.equal(output.trim());
+    suitcss(input, {root: 'test/fixtures'}).then(function(result) {
+      expect(result.css.trim()).to.be.equal(output.trim());
+      done();
+    }).catch(done);
   });
 });
 

@@ -106,18 +106,19 @@ function run () {
     if (err) logger.throw(err);
     var css = buffer.toString();
 
-    try {
-      css = suitcss(css, { root: program.importRoot, config: config });
-    } catch (e) {
-      e.css = css;
-      logger.throw(e);
-    }
-
-    if (output) {
-      writeFileSync(output, css + '\n');
-    } else {
-      console.log(css);
-    }
+    suitcss(css, {
+      compress: program.compress,
+      root: program.importRoot,
+      config: config
+    }).then(function(result) {
+      if (output) {
+        writeFileSync(output, result.css + '\n');
+      } else {
+        console.log(result.css);
+      }
     if (verbose && output) logger.log('write', output);
+    }).catch(function(e) {
+      logger.throw(e);
+    });
   });
 }

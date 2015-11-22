@@ -120,13 +120,15 @@ npm run preprocess
 
 ### Node.js
 
+Returns a [PostCSS promise](https://github.com/postcss/postcss/blob/master/docs/api.md#lazyresult-class)
+
 ```js
 var preprocessor = require('suitcss-preprocessor');
 var fs = require('fs');
 
 var css = fs.readFileSync('src/components/index.css', 'utf8');
 
-var bundle = preprocessor(css, {
+preprocessor(css, {
   root: 'path/to/css',
   minify: true,
   config: {
@@ -134,9 +136,9 @@ var bundle = preprocessor(css, {
     autoprefixer: { browsers: ['> 1%', 'IE 7'], cascade: false },
     'postcss-calc': { preserve: true }
   }
+}).then(function(result) {
+  fs.writeFileSync('build/bundle.css', result.css);
 });
-
-fs.writeFileSync('build/bundle.css', bundle);
 ```
 
 ## Acknowledgements
