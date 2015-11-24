@@ -58,7 +58,6 @@ describe('suitcss', function () {
       var opts = mergeOptions({
         root: 'test/root',
         config: {
-          use: ['postcss-property-lookup'],
           autoprefixer: autoprefixer
         }
       });
@@ -69,11 +68,28 @@ describe('suitcss', function () {
         'postcss-calc',
         'postcss-custom-media',
         'autoprefixer',
-        'postcss-property-lookup',
         'postcss-reporter'
       ]);
       expect(opts.autoprefixer).to.eql(autoprefixer);
       expect(opts['postcss-import'].root).to.equal('test/root');
+    });
+
+    it('should allow reordering of use array and remove duplicates', function() {
+      var opts = mergeOptions({
+        config: {
+          use: ['autoprefixer', 'postcss-at2x', 'postcss-calc', 'postcss-reporter']
+        }
+      });
+
+      expect(opts.use).to.eql([
+        'postcss-import',
+        'postcss-custom-properties',
+        'postcss-custom-media',
+        'autoprefixer',
+        'postcss-at2x',
+        'postcss-calc',
+        'postcss-reporter'
+      ]);
     });
   });
 });
