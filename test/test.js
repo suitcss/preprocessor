@@ -19,9 +19,8 @@ describe('suitcss', function () {
     });
   });
 
-  it('should throw if css is not a string', function() {
-    expect(function() {suitcss(null);}).to.throw(Error);
-    expect(function() {suitcss({});}).to.throw(Error);
+  it('should handle invalid input', function() {
+    expect(function() {suitcss(null);}).to.throw(TypeError);
   });
 
   describe('using options', function() {
