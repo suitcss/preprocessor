@@ -54,7 +54,7 @@ Examples:
   # configure the import root directory:
   $ suitcss --import-root src/css input.css output.css
 
-  # watch the input file for changes:
+  # watch the input file and imports for changes:
   $ suitcss --watch input.css output.css
 
   # configure postcss plugins with a config file:
