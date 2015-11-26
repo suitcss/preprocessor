@@ -1,4 +1,5 @@
 var expect = require('chai').expect;
+var sinon = require('sinon');
 var child = require('child_process');
 var exec = child.exec;
 var spawn = child.spawn;
@@ -112,6 +113,47 @@ describe('suitcss', function () {
           'postcss-at2x',
           'postcss-property-lookup'
         ]);
+      });
+    });
+
+    describe('beforeLint option', function() {
+      var lintImportedFilesStub, bemLintStub, beforeLintStub, revert;
+
+      beforeEach(function() {
+        lintImportedFilesStub = sinon.stub();
+        bemLintStub = sinon.stub().returns('/* lint */');
+        beforeLintStub = sinon.stub().returns('/* before lint */');
+
+        lintImportedFilesStub.onFirstCall().returns(bemLintStub);
+        revert = suitcss.__set__('lintImportedFiles', lintImportedFilesStub);
+      });
+
+      afterEach(function() {
+        revert();
+      });
+
+      it('should call user supplied function before linting', function (done) {
+        suitcss(read('fixtures/component'), {
+          root: 'test/fixtures',
+          beforeLint: beforeLintStub
+        }).catch(done);
+
+        expect(bemLintStub.calledOnce).to.be.ok;
+        expect(beforeLintStub.calledOnce).to.be.ok;
+        expect(beforeLintStub.calledBefore(bemLintStub)).to.be.ok;
+
+        done();
+      });
+
+      it('should pass processed CSS to the linting transform function', function (done) {
+        suitcss(read('fixtures/component'), {
+          root: 'test/fixtures',
+          beforeLint: beforeLintStub
+        }).catch(done);
+
+        expect(bemLintStub.getCall(0).args[0]).to.equal('/* before lint */');
+
+        done();
       });
     });
   });
