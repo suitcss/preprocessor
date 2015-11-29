@@ -2,6 +2,7 @@
   "extends": "airbnb/legacy",
   "rules": {
     "vars-on-top": 0,
+    "no-console": 0,
     "comma-dangle": [2, "never"],
     "func-names": 0,
     "one-var": [2, { uninitialized: "always", initialized: "never" }],
