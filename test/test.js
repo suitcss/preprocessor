@@ -60,7 +60,7 @@ describe('suitcss', function() {
       expect(opts.lint).to.be.true;
     });
 
-    it('should allow an minify option to be set', function() {
+    it('should allow a minify option to be set', function() {
       var opts = mergeOptions({minify: true});
       expect(opts.minify).to.be.true;
     });
