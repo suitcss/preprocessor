@@ -1,4 +1,4 @@
-var expect = require('chai').expect;
+var chai = require('chai');
 var sinon = require('sinon');
 var child = require('child_process');
 var exec = child.exec;
@@ -6,6 +6,10 @@ var fs = require('fs');
 var rewire = require('rewire');
 var suitcss = rewire('../lib');
 var path = require('path');
+var sinonChai = require('sinon-chai');
+
+chai.use(sinonChai);
+var expect = chai.expect;
 
 /**
  * Node API tests.
@@ -182,9 +186,9 @@ describe('suitcss', function() {
           beforeLint: beforeLintStub
         }).catch(done);
 
-        expect(lintImportedFilesStub.calledOnce).to.be.true;
-        expect(beforeLintStub.calledOnce).to.be.true;
-        expect(beforeLintStub.calledBefore(lintImportedFilesStub)).to.be.true;
+        expect(lintImportedFilesStub).to.be.called.once;
+        expect(beforeLintStub).to.be.called.once;
+        expect(beforeLintStub).to.have.been.calledBefore(lintImportedFilesStub);
 
         done();
       });
