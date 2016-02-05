@@ -186,8 +186,8 @@ describe('suitcss', function() {
           beforeLint: beforeLintStub
         }).catch(done);
 
-        expect(lintImportedFilesStub).to.be.called.once;
-        expect(beforeLintStub).to.be.called.once;
+        expect(lintImportedFilesStub).to.be.calledOnce;
+        expect(beforeLintStub).to.be.calledOnce;
         expect(beforeLintStub).to.have.been.calledBefore(lintImportedFilesStub);
 
         done();
