@@ -7,6 +7,7 @@ var rewire = require('rewire');
 var suitcss = rewire('../lib');
 var path = require('path');
 var sinonChai = require('sinon-chai');
+require('sinon-as-promised');
 
 chai.use(sinonChai);
 var expect = chai.expect;
