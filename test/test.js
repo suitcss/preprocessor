@@ -152,7 +152,7 @@ describe('suitcss', function() {
     });
 
     describe('stylelint', function() {
-      it('should check the input conforms to SUIT style rules', function(done) {
+      it('should throw an error if stylelint fails', function(done) {
         suitcss('@import "./stylelint.css"', {
           lint: true,
           root: 'test/fixtures',
