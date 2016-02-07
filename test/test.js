@@ -7,9 +7,11 @@ var rewire = require('rewire');
 var suitcss = rewire('../lib');
 var path = require('path');
 var sinonChai = require('sinon-chai');
+var chaiAsPromised = require('chai-as-promised');
 require('sinon-as-promised');
 
 chai.use(sinonChai);
+chai.use(chaiAsPromised);
 var expect = chai.expect;
 
 /**
@@ -152,19 +154,16 @@ describe('suitcss', function() {
     });
 
     describe('stylelint', function() {
-      it('should throw an error if stylelint fails', function(done) {
-        suitcss('@import "./stylelint.css"', {
-          lint: true,
-          root: 'test/fixtures',
-          'postcss-reporter': {
-            throwError: true
-          }
-        }).then(function() {
-          done(new Error('stylelint should have failed conformance'));
-        }).catch(function(err) {
-          expect(err.message).to.contain('postcss-reporter: warnings or errors were found');
-          done();
-        });
+      it('should throw an error if stylelint fails', function() {
+        return expect(
+          suitcss('@import "./stylelint.css"', {
+            lint: true,
+            root: 'test/fixtures',
+            'postcss-reporter': {
+              throwError: true
+            }
+          })
+        ).to.be.rejectedWith(Error, 'postcss-reporter: warnings or errors were found');
       });
     });
 
