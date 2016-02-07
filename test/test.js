@@ -154,6 +154,18 @@ describe('suitcss', function() {
     });
 
     describe('stylelint', function() {
+      it('should lint the component', function() {
+        return expect(
+          suitcss(read('fixtures/component'), {
+            lint: true,
+            root: 'test/fixtures',
+            'postcss-reporter': {
+              throwError: true
+            }
+          })
+        ).to.be.fulfilled;
+      });
+
       it('should throw an error if stylelint fails', function() {
         return expect(
           suitcss('@import "./stylelint.css"', {
