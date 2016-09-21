@@ -27,7 +27,9 @@ describe('suitcss', function() {
   });
 
   it('should handle invalid input', function() {
-    expect(function() {suitcss(null);}).to.throw(TypeError);
+    expect(function() {
+      suitcss(null);
+    }).to.throw(TypeError);
   });
 
   describe('using options', function() {

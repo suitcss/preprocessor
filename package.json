@@ -35,8 +35,8 @@
   "devDependencies": {
     "chai": "^3.4.1",
     "chai-as-promised": "^5.2.0",
-    "eslint": "^1.10.3",
-    "eslint-config-airbnb": "^5.0.0",
+    "eslint": "^3.5.0",
+    "eslint-config-airbnb": "^11.1.0",
     "mocha": "^2.3.4",
     "postcss-property-lookup": "^1.1.4",
     "rewire": "^2.5.1",
