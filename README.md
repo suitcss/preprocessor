@@ -47,6 +47,7 @@ Options:
   -m, --minify              minify output with cssnano
   -L, --no-lint             disable stylelint and postcss-bem-linter
   -i, --import-root [path]  the root directory for imported css files
+  -e, --throw-error         throw an error when any warnings are found
   -c, --config [path]       a custom PostCSS config file
   -v, --verbose             log verbose output for debugging
   -w, --watch               watch the input file and any imports for changes
