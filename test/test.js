@@ -2,12 +2,11 @@ var chai = require('chai');
 var sinon = require('sinon');
 var child = require('child_process');
 var exec = child.exec;
-var fs = require('fs');
 var rewire = require('rewire');
 var suitcss = rewire('../lib');
-var path = require('path');
 var sinonChai = require('sinon-chai');
 var chaiAsPromised = require('chai-as-promised');
+var util = require('./util');
 require('sinon-as-promised');
 
 chai.use(sinonChai);
@@ -261,7 +260,7 @@ describe('suitcss', function() {
     describe('stylelint', function() {
       it('should lint the component', function() {
         return expect(
-          suitcss(read('fixtures/component'), {
+          suitcss(util.read('fixtures/component'), {
             root: 'test/fixtures',
             'postcss-reporter': {
               throwError: true
@@ -300,7 +299,8 @@ describe('suitcss', function() {
 
       it('should lint the input file', function() {
         return expect(
-          suitcss('body {}', {
+          suitcss('@import "./stylelint.css"\n\n', {
+            root: 'test/fixtures',
             'postcss-reporter': {
               throwError: true
             }
@@ -317,8 +317,8 @@ describe('suitcss', function() {
 
 describe('features', function() {
   it('should preprocess CSS correctly', function(done) {
-    var input = read('fixtures/component');
-    var output = read('fixtures/component.out');
+    var input = util.read('fixtures/component');
+    var output = util.read('fixtures/component.out');
 
     suitcss(input, {
       root: 'test/fixtures',
@@ -352,17 +352,17 @@ describe('features', function() {
  */
 
 describe('cli', function() {
-  var input = read('fixtures/cli/input');
-  var output = read('fixtures/cli/input.out');
+  var input = util.read('fixtures/cli/input');
+  var output = util.read('fixtures/cli/input.out');
 
   afterEach(function() {
-    remove('fixtures/cli/output');
+    util.remove('fixtures/cli/output');
   });
 
   it('should read from a file and write to a file', function(done) {
     exec('node bin/suitcss -c test/config/noautoprefixer.config.js test/fixtures/cli/input.css test/fixtures/cli/output.css', function(err) {
       if (err) return done(err);
-      var res = read('fixtures/cli/output');
+      var res = util.read('fixtures/cli/output');
       expect(res).to.equal(output);
       done();
     });
@@ -398,8 +398,8 @@ describe('cli', function() {
   it('should allow configurable import root', function(done) {
     exec('node bin/suitcss -i test/fixtures -c test/config/noautoprefixer.config.js test/fixtures/import.css test/fixtures/cli/output.css', function(err) {
       if (err) return done(err);
-      var res = read('fixtures/cli/output');
-      var expected = read('fixtures/component.out');
+      var res = util.read('fixtures/cli/output');
+      var expected = util.read('fixtures/component.out');
       expect(res).to.equal(expected);
       done();
     });
@@ -416,8 +416,8 @@ describe('cli', function() {
   it('should minify the output', function(done) {
     exec('node bin/suitcss -i test/fixtures -c test/config/noautoprefixer.config.js test/fixtures/import.css test/fixtures/cli/output.css -m', function(err) {
       if (err) return done(err);
-      var res = read('fixtures/cli/output');
-      var expected = read('fixtures/minify.out');
+      var res = util.read('fixtures/cli/output');
+      var expected = util.read('fixtures/minify.out');
       expect(res).to.equal(expected);
       done();
     });
@@ -426,8 +426,8 @@ describe('cli', function() {
   it('should allow a config file to be passed', function(done) {
     exec('node bin/suitcss -i test/fixtures -c test/config/test.config.js test/fixtures/config.css test/fixtures/cli/output.css', function(err) {
       if (err) return done(err);
-      var res = read('fixtures/cli/output');
-      var expected = read('fixtures/config.out');
+      var res = util.read('fixtures/cli/output');
+      var expected = util.read('fixtures/config.out');
       expect(res).to.equal(expected);
       done();
     });
@@ -451,38 +451,3 @@ describe('cli', function() {
     });
   });
 });
-
-/**
- * Read a fixture by `filename`.
- *
- * @param {String} filename
- * @return {String}
- */
-
-function read(filename) {
-  var file = resolve(filename);
-  return fs.readFileSync(file, 'utf8');
-}
-
-/**
- * Remove a fixture by `filename`.
- *
- * @param {String} filename
- */
-
-function remove(filename) {
-  var file = resolve(filename);
-  if (!fs.existsSync(file)) return;
-  fs.unlinkSync(file);
-}
-
-/**
- * Resolve a fixture by `filename`.
- *
- * @param {String} filename
- * @return {String}
- */
-
-function resolve(filename) {
-  return path.resolve(__dirname, filename + '.css');
-}
