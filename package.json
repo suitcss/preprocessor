@@ -47,7 +47,7 @@
   "scripts": {
     "test": "npm run mocha && npm run lint",
     "mocha": "mocha test/index.js --reporter spec --slow 400 --timeout 8000",
-    "lint": "eslint lib/index.js test/test.js bin/suitcss",
+    "lint": "eslint lib/*.js test/**/*.js bin/suitcss",
     "watch": "npm run mocha -- --watch"
   },
   "keywords": [
