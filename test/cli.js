@@ -48,18 +48,8 @@ describe('cli', function() {
     });
   });
 
-  it('should allow configurable import root', function(done) {
-    exec('node bin/suitcss -i test/fixtures -c test/config/noautoprefixer.js test/fixtures/import.css test/fixtures/cli/output.css', function(err) {
-      if (err) return done(err);
-      var res = util.read('fixtures/cli/output');
-      var expected = util.read('fixtures/component.out');
-      expect(res).to.equal(expected);
-      done();
-    });
-  });
-
   it('should output stylelint warnings', function(done) {
-    exec('node bin/suitcss -i test/fixtures -c test/config/noautoprefixer.js test/fixtures/stylelint-import.css test/fixtures/cli/output.css -l', function(err, stdout) {
+    exec('node bin/suitcss -i test/fixtures -c test/config/noautoprefixer.js stylelint-import.css test/fixtures/cli/output.css -l', function(err, stdout) {
       if (err) return done(err);
       expect(stdout).to.contain('Expected indentation of 2 spaces');
       done();
@@ -67,7 +57,7 @@ describe('cli', function() {
   });
 
   it('should minify the output', function(done) {
-    exec('node bin/suitcss -i test/fixtures -c test/config/noautoprefixer.js test/fixtures/import.css test/fixtures/cli/output.css -m', function(err) {
+    exec('node bin/suitcss -i test/fixtures -c test/config/noautoprefixer.js import.css test/fixtures/cli/output.css -m', function(err) {
       if (err) return done(err);
       var res = util.read('fixtures/cli/output');
       var expected = util.read('fixtures/minify.out');
@@ -77,7 +67,7 @@ describe('cli', function() {
   });
 
   it('should allow a config module to be passed', function(done) {
-    exec('node bin/suitcss -i test/fixtures -c test/config/test.js test/fixtures/config.css test/fixtures/cli/output.css', function(err) {
+    exec('node bin/suitcss -i test/fixtures -c test/config/test.js config.css test/fixtures/cli/output.css', function(err) {
       if (err) return done(err);
       var res = util.read('fixtures/cli/output');
       var expected = util.read('fixtures/config.out');
@@ -87,7 +77,7 @@ describe('cli', function() {
   });
 
   it('should allow an arbitrarily named json config file to be passed', function(done) {
-    exec('node bin/suitcss -i test/fixtures -c test/config/test.config test/fixtures/config.css test/fixtures/cli/output.css', function(err) {
+    exec('node bin/suitcss -i test/fixtures -c test/config/test.config config.css test/fixtures/cli/output.css', function(err) {
       if (err) return done(err);
       var res = util.read('fixtures/cli/output');
       var expected = util.read('fixtures/config.out');
@@ -117,7 +107,7 @@ describe('cli', function() {
   });
 
   it('should output an error to stderr on conformance failure when --throw-error is set', function(done) {
-    exec('node bin/suitcss -i test/fixtures -e test/fixtures/import-error.css test/fixtures/cli/output.css', function(err, stdout, stderr) {
+    exec('node bin/suitcss -i test/fixtures -e import-error.css test/fixtures/cli/output.css', function(err, stdout, stderr) {
       expect(err).to.be.an('error');
       expect(err.code).to.equal(1);
       expect(stderr).to.contain('postcss-reporter: warnings or errors were found');
@@ -131,6 +121,15 @@ describe('cli', function() {
       expect(err.code).to.equal(1);
       expect(stderr).to.contain('not found');
       done();
+    });
+  });
+
+  describe('importRoot', function() {
+    it('should resolve input files relative to importRoot', function(done) {
+      exec('node bin/suitcss -i test/fixtures import.css test/fixtures/cli/output.css', function(err) {
+        expect(err).to.be.null;
+        done();
+      });
     });
   });
 });
