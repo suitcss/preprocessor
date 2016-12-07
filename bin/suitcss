@@ -70,17 +70,27 @@ function requireOrParse(configFile) {
   return readFn(configPath);
 }
 
-var input = program.args[0] ? resolve(program.args[0]) : null;
-var output = program.args[1] ? resolve(program.args[1]) : null;
 var config = program.config ? requireOrParse(program.config) : {};
 var verbose = program.verbose;
-var regen = program.watch && input && output;
+var output = program.args[1] ? resolve(program.args[1]) : null;
 
 /**
- * Exists?
+ * Input file.
  */
 
-if (input && !exists(input)) logger.fatal('not found', input);
+var input = program.args[0] || null;
+var importRoot = program.importRoot || config.root;
+
+if (input) {
+  var resolvedInput = importRoot ? resolve(importRoot, input) : resolve(input);
+  if (!exists(resolvedInput)) {
+    logger.fatal('not found', resolvedInput);
+  } else {
+    input = resolvedInput;
+  }
+}
+
+var regen = program.watch && input && output;
 
 /**
  * Run.
