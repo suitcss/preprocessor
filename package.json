@@ -41,8 +41,9 @@
     "chai": "^3.4.1",
     "chai-as-promised": "^6.0.0",
     "computed-style": "^0.3.0",
-    "eslint": "^3.5.0",
-    "eslint-config-airbnb": "^11.1.0",
+    "eslint": "^3.16.1",
+    "eslint-config-airbnb-base": "^11.1.0",
+    "eslint-plugin-import": "^2.2.0",
     "mocha": "^3.2.0",
     "postcss-property-lookup": "^1.1.4",
     "rewire": "^2.5.1",
@@ -52,10 +53,11 @@
     "tape-run": "^2.1.4"
   },
   "scripts": {
-    "test": "npm run mocha && npm run test:encapsulation && npm run lint",
+    "test": "npm run mocha && npm run test:encapsulation",
     "test:encapsulation": "browserify -t [ browserify-css --autoInject=false ] test/encapsulation/browser.js | tape-run",
     "mocha": "mocha test/index.js --reporter spec --slow 400 --timeout 8000",
-    "lint": "eslint lib/*.js test/**/*.js bin/suitcss",
+    "posttest": "npm run lint",
+    "lint": "eslint lib test bin/suitcss",
     "watch": "npm run mocha -- --watch"
   },
   "keywords": [
