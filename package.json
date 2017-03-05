@@ -33,7 +33,7 @@
     "postcss-reporter": "^3.0.0",
     "read-file-stdin": "^0.2.1",
     "stylelint": "^7.2.0",
-    "stylelint-config-suitcss": "^9.0.0"
+    "stylelint-config-suitcss": "^10.0.0"
   },
   "devDependencies": {
     "browserify": "^14.1.0",
